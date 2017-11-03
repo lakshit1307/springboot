@@ -1,0 +1,68 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+ext {
+	buildNumber = System.getenv("BUILD_NUMBER") ?: "dev"
+	buildNumber = buildNumber.trim()
+}
+
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'maven-publish'
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId 'com.healthege.myProject'
+				version "1.0.0-$buildNumber"
+            }
+        }
+        
+        if (System.getenv("BUILD_NUMBER")) {
+            repositories {
+                maven {
+                    url "$artifactPublishPath"
+                    credentials {
+                        username = "$artifactUser"
+                        password = "$artifactPassword"
+                    }
+                }
+            }
+        }
+    }
+    
+    dependencies {
+    	compile group: 'org.apache.camel', name: 'camel-spring-boot', version: '2.20.0'
+	    compile('org.springframework.boot:spring-boot-starter-actuator')
+		compile('org.springframework.boot:spring-boot-actuator-docs')
+		compile('org.springframework.boot:spring-boot-starter-data-jpa')
+		compile('org.springframework.boot:spring-boot-starter-web')
+		compile("org.springframework.boot:spring-boot-devtools")
+		runtime('mysql:mysql-connector-java')
+		compile 'org.apache.camel:camel-jpa:2.20.0'
+    	compile 'org.apache.camel:camel-sql:2.20.0'
+    	compile 'org.apache.camel:camel-jetty:2.20.0'
+    	compile 'org.apache.camel:camel-jackson:2.20.0'
+		testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
+	
+}
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+}

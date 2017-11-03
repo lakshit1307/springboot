@@ -1,0 +1,46 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+springBoot {
+	bootRepackage.enabled = false
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+	baseName = 'myProject-common'
+	version = '0.0.1-SNAPSHOT'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifactId 'myProject-common'
+			from components.java
+		}
+	}
+}
+
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	
+}

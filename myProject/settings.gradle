@@ -1,0 +1,7 @@
+include "myProject-web"
+include "myProject-business"
+include "myProject-service"
+include "myProject-dao"
+include "myProject-persistence"
+include "myProject-dto"
+include "myProject-common"
